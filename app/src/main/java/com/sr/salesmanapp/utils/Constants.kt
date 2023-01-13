@@ -13,6 +13,9 @@ object Constants {
     const val PLACE_API_KEY = "AIzaSyDXW6G4m09svxv3i7sQ6oltPoTZgxt9okk"
     var IS_LOCATION_UPDATE = false
 
+    const val ADMIN = "admin"
+    const val NORMAL = "normal"
+
     ///LocationUpdate and sync to server
     const val secondsToSyncLocationToServer : Long = 90
     const val miliSecondsForLocationUpdate : Long = 2000

@@ -89,6 +89,7 @@ class RegistrationFragment : Fragment() {
         var email = binding.etEmail?.text?.toString()!!
         var phone = binding.etPhone?.text?.toString()!!
         var pass = binding.etPass?.text?.toString()!!
+        var user_type = Constants.NORMAL
 
         showProgress()
         mAuth.createUserWithEmailAndPassword(email,pass)
@@ -97,7 +98,7 @@ class RegistrationFragment : Fragment() {
 
                     FirebaseDatabase.getInstance().getReference(Constants.USER_MODEL)
                         .child(FirebaseAuth.getInstance().currentUser?.uid!!)
-                        .setValue(UsersModel(email,phone)).addOnCompleteListener {
+                        .setValue(UsersModel(email,phone,user_type)).addOnCompleteListener {
                             hideProgress()
                             if(it.isSuccessful){
                                 Toast.makeText(requireContext(),"${email} Registered Successfully",Toast.LENGTH_LONG).show()

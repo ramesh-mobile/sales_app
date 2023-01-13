@@ -11,8 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import com.google.gson.Gson
+import com.pixplicity.easyprefs.library.Prefs
 import com.sr.salesmanapp.R
 import com.sr.salesmanapp.data.model.pojo.ShopModel
+import com.sr.salesmanapp.data.model.pojo.UsersModel
 import com.sr.salesmanapp.databinding.FragmentShopListBinding
 import com.sr.salesmanapp.ui.base.BaseFragment
 import com.sr.salesmanapp.ui.home.adapter.ShopListAdapter
@@ -32,8 +35,14 @@ class ShopListFragment : BaseFragment<FragmentShopListBinding>() {
 
     lateinit var shopLisAdapter : ShopListAdapter
 
+
     override fun initView() {
-        shopLisAdapter = ShopListAdapter(requireContext(),shopModelList,onPhoneOneClick,onPhoneTwoClick,onAddressClick,onShareClick)
+        var userType : String = Constants.NORMAL
+        Prefs.getString(Constants.USER_MODEL,null)?.let {
+            userType = Gson().fromJson<UsersModel>(it,UsersModel::class.java).userType!!
+        }
+
+        shopLisAdapter = ShopListAdapter(requireContext(),userType,shopModelList,onPhoneOneClick,onPhoneTwoClick,onAddressClick,onShareClick,onDeleteClick)
         binding.rvShops.apply {
             layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
             adapter = shopLisAdapter
@@ -73,6 +82,10 @@ class ShopListFragment : BaseFragment<FragmentShopListBinding>() {
             putExtra(Intent.EXTRA_TEXT, "https://www.google.com/maps?q=${latlng?.get(0)?.trim()?:0.0},${latlng?.get(1)?.trim()?:0.0}(Consumer)")
             type = "text/plain"
         })
+    }
+
+    val onDeleteClick : (String?)->Unit = {
+        Toast.makeText(requireContext(), "Under process", Toast.LENGTH_SHORT).show()
     }
 
     private fun fetchDataFromDb() {

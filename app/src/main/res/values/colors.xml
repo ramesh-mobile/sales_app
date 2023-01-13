@@ -15,4 +15,5 @@
     <color name="shadowColor">#C0C0C1</color>
     <color name="gray_dot_indicator">#DDDDDD</color>
     <color name="text_color_light_black">#333333</color>
+    <color name="red">#ff0000</color>
 </resources>

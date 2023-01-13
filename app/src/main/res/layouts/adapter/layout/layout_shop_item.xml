@@ -16,23 +16,38 @@
 
         <TextView
             android:id="@+id/tvShopName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="12dp"
             android:text="Shop Name"
             android:textColor="@color/black"
             android:textStyle="bold"
+            android:layout_marginEnd="@dimen/margin_normal_xxxx"
+            app:layout_constraintEnd_toStartOf="@+id/ivDelete"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tvOwnerName"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivDelete"
+            android:visibility="visible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvShopName"
+            app:srcCompat="@drawable/ic_baseline_delete_24"
+            app:tint="@color/red"/>
+
+        <TextView
+            android:id="@+id/tvOwnerName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:layout_marginEnd="@dimen/margin_normal_xxxx"
             android:text="Owner Name"
             android:textColor="@color/black"
+            app:layout_constraintEnd_toStartOf="@+id/ivDelete"
             app:layout_constraintStart_toStartOf="@+id/tvShopName"
             app:layout_constraintTop_toBottomOf="@+id/tvShopName" />
 
@@ -88,7 +103,7 @@
             android:text="Address"
             android:gravity="start"
             android:textColor="@color/black"
-            android:layout_marginEnd="@dimen/text_size_normal_xxxx"
+            android:layout_marginEnd="@dimen/margin_normal_xxxx"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/ivAddress"
             app:layout_constraintStart_toStartOf="@+id/tvPhoneOne"
