@@ -93,7 +93,7 @@ class ShopListFragment : BaseFragment<FragmentShopListBinding>() {
 
             })
 
-            dbReference.child(userId).addChildEventListener(object : ChildEventListener {
+            dbReference./*child(userId).*/addChildEventListener(object : ChildEventListener {
 
 
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {

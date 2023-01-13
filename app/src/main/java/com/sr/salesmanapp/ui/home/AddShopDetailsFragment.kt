@@ -134,7 +134,7 @@ class AddShopDetailsFragment : BaseFragment<FragmentShopDetailsBinding>() {
 
     private fun saveDataInDb() {
         var storeId = System.currentTimeMillis().toString()
-        dbReference.child(userId).child(storeId).setValue(ShopModel(
+        dbReference.child(storeId).setValue(ShopModel(
             System.currentTimeMillis().toString(),
             binding.etShopName?.text?.toString(),
             binding.etOwnerName?.text?.toString(),
