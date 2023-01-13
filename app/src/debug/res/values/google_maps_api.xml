@@ -1,0 +1,24 @@
+<resources>
+    <!--
+    TODO: Before you run your application, you need a Google Maps API key.
+
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=6C:77:D2:9B:C4:76:01:FB:A6:1A:0F:34:48:7A:7F:67:F6:F5:32:D1%3Bcom.sr.salesmanapp.ui.home.map
+
+    You can also add your credentials to an existing key, using these values:
+
+    Package name:
+    com.sr.salesmanapp.ui.home.map
+
+    SHA-1 certificate fingerprint:
+    6C:77:D2:9B:C4:76:01:FB:A6:1A:0F:34:48:7A:7F:67:F6:F5:32:D1
+
+    Alternatively, follow the directions here:
+    https://developers.google.com/maps/documentation/android/start#get-key
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyAoML-fpXKWXKJLqyV_t9ARVeDz2eSWjwE</string>
+</resources>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/HomeFragment">
+
+    <fragment
+        android:id="@+id/HomeFragment"
+        android:name="com.sr.salesmanapp.ui.home.HomeFragment"
+        android:label="@string/first_fragment_label"
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/action_HomeFragment_to_ShopDetailsFragment"
+            app:destination="@id/ShopDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ShopDetailsFragment"
+        android:name="com.sr.salesmanapp.ui.home.AddShopDetailsFragment"
+        android:label="@string/second_fragment_label"
+        tools:layout="@layout/fragment_shop_details">
+
+        <action
+            android:id="@+id/action_ShopDetailsFragment_to_HomeFragment"
+            app:destination="@id/HomeFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/ShopListFragment"
+        android:name="com.sr.salesmanapp.ui.home.ShopListFragment"
+        android:label="@string/shop_list"
+        tools:layout="@layout/fragment_shop_list"/>
+
+    <fragment
+        android:id="@+id/ShopLocationMapFragment"
+        android:name="com.sr.salesmanapp.ui.home.ShopLocationMapFragment"
+        android:label="@string/shop_map_fragment"
+        tools:layout="@layout/fragment_delivery_details_map"/>
+    <fragment
+        android:id="@+id/MapFragment"
+        android:name="com.sr.salesmanapp.ui.home.MapFragment"
+        android:label="MapFragment"
+        tools:layout="@layout/fragment_map"/>
+
+
+</navigation>

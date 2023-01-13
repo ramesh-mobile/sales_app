@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/map_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/ic_baseline_location_on_24"
+        app:tint="@color/black">
+
+    </ImageView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/searchholder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/light_blue">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:layout_marginBottom="0dp"
+                android:elevation="10dp"
+                android:visibility="visible"
+                app:cardBackgroundColor="@color/shadowColor"
+                app:cardCornerRadius="15dp"
+                app:cornerRadius="@dimen/margin_normal">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_solid_white_black_stroke">
+
+                    <EditText
+                        android:id="@+id/placeSearch"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/button_height_medium_x"
+                        android:layout_toStartOf="@id/clearSearch"
+                        android:background="@color/transparent"
+                        android:drawableStart="@drawable/ic_baseline_directions_bike_24"
+                        android:drawableEnd="@drawable/ic_baseline_search_24"
+                        android:drawablePadding="@dimen/margin_small"
+                        android:drawableTint="@color/black"
+                        android:ellipsize="end"
+                        android:hint="Type your location here"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:paddingStart="@dimen/margin_normal"
+                        android:paddingEnd="@dimen/margin_medium"
+                        android:scrollHorizontally="true"
+                        android:textSize="@dimen/text_size_medium" />
+
+                    <ImageView
+                        android:id="@+id/clearSearch"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginEnd="@dimen/margin_normal"
+                        android:src="@drawable/ic_baseline_close_24"
+                        android:visibility="gone"
+                        app:tint="@color/black" />
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/searchholder"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:background="@drawable/button_solid_white_black_stroke"
+            android:divider="@color/transparent"
+            android:dividerHeight="0dp"
+            android:scrollbars="none"
+            android:visibility="visible" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/confirmLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal_xxx"
+                android:layout_marginTop="@dimen/margin_small_xx"
+                android:layout_marginEnd="@dimen/margin_normal_xxx"
+                android:layout_marginBottom="@dimen/margin_large"
+                android:text="Confirm" />
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

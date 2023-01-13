@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Margin -->
+    <dimen name="margin_small">5dp</dimen>
+    <dimen name="margin_small_x">6dp</dimen>
+    <dimen name="margin_small_xx">7dp</dimen>
+    <dimen name="margin_small_xxx">8dp</dimen>
+    <dimen name="margin_small_xxxx">9dp</dimen>
+
+    <dimen name="margin_normal">10dp</dimen>
+    <dimen name="margin_normal_x">11dp</dimen>
+    <dimen name="margin_normal_xx">12dp</dimen>
+    <dimen name="margin_normal_xxx">13dp</dimen>
+    <dimen name="margin_normal_xxxx">14dp</dimen>
+
+    <dimen name="margin_medium">15dp</dimen>
+    <dimen name="margin_medium_x">16dp</dimen>
+    <dimen name="margin_medium_xx">17dp</dimen>
+    <dimen name="margin_medium_xxx">18dp</dimen>
+    <dimen name="margin_medium_xxxx">19dp</dimen>
+    <dimen name="margin_88">90dp</dimen>
+    <dimen name="margin_large">20dp</dimen>
+    <dimen name="margin_large_x">21dp</dimen>
+    <dimen name="margin_large_xx">22dp</dimen>
+    <dimen name="margin_large_xxx">23dp</dimen>
+    <dimen name="margin_large_xxxx">24dp</dimen>
+
+    <dimen name="margin_extra_large">25dp</dimen>
+    <dimen name="margin_extra_large_x">26dp</dimen>
+    <dimen name="margin_extra_large_xx">27dp</dimen>
+    <dimen name="margin_extra_large_xxx">28dp</dimen>
+    <dimen name="margin_extra_large_xxxx">29dp</dimen>
+    <dimen name="margin_extra_xxxxx">32dp</dimen>
+    <dimen name="margin_34dp">34dp</dimen>
+
+    <dimen name="margin_ultra_large">50dp</dimen>
+
+    <dimen name="margin_medium_negative">-15dp</dimen>
+
+
+    <!-- Text Sizes-->
+    <dimen name="text_size_small">5sp</dimen>
+    <dimen name="text_size_small_x">6sp</dimen>
+    <dimen name="text_size_small_xx">7sp</dimen>
+    <dimen name="text_size_small_xxx">8sp</dimen>
+    <dimen name="text_size_small_xxxx">9sp</dimen>
+    <dimen name="text_size_normal">10sp</dimen>
+    <dimen name="text_size_normal_x">11sp</dimen>
+    <dimen name="text_size_normal_xx">12sp</dimen>
+    <dimen name="text_size_normal_xxx">13sp</dimen>
+    <dimen name="text_size_normal_xxxx">14sp</dimen>
+
+    <dimen name="text_size_medium">15sp</dimen>
+    <dimen name="text_size_medium_x">16sp</dimen>
+    <dimen name="text_size_medium_xx">17sp</dimen>
+    <dimen name="text_size_medium_xxx">18sp</dimen>
+    <dimen name="text_size_medium_xxxx">19sp</dimen>
+
+    <dimen name="text_size_large">20sp</dimen>
+    <dimen name="text_size_large_x">21sp</dimen>
+    <dimen name="text_size_large_xx">22sp</dimen>
+    <dimen name="text_size_large_xxx">23sp</dimen>
+    <dimen name="text_size_large_xxxx">24sp</dimen>
+
+    <dimen name="text_size_point">27sp</dimen>
+    <dimen name="text_size_loyalty_point">60sp</dimen>
+
+    <dimen name="button_height_small">35dp</dimen>
+    <dimen name="button_height_normal">45dp</dimen>
+    <dimen name="button_height_medium">50dp</dimen>
+    <dimen name="button_height_medium_x">52dp</dimen>
+    <dimen name="button_height_large">55dp</dimen>
+    <dimen name="button_height_extra_large">60dp</dimen>
+    <dimen name="header_height">75dp</dimen>
+    <dimen name="title_logo_margin">70dp</dimen>
+    <dimen name="placeholder_image">50dp</dimen>
+    <dimen name="placeholder_text_height">8dp</dimen>
+    <dimen name="margin_zero">0dp</dimen>
+
+    <dimen name="order_details_status_alpha">0.3</dimen>
+
+    <dimen name="fab_margin">16dp</dimen>
+
+</resources>
