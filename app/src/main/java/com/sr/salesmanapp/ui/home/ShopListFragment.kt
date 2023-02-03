@@ -101,8 +101,38 @@ class ShopListFragment : BaseFragment<FragmentShopListBinding>() {
         })
     }
 
-    val onDeleteClick : (String?)->Unit = {
+    private val onDeleteClick : (String?)->Unit = {
         Toast.makeText(requireContext(), "Under process", Toast.LENGTH_SHORT).show()
+        dbReference = FirebaseDatabase.getInstance().getReference(Constants.SHOP_MODEL)
+        dbReference.orderByChild("shopId").equalTo(it).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                snapshot.children.forEach {
+                    Toast.makeText(requireContext(), "data deleted", Toast.LENGTH_SHORT).show()
+                    binding.etSearch?.setText("")
+                    it.ref.removeValue()
+                    shopLisAdapter.clearDataList()
+                    shopModelList?.clear()
+                    fetchDataFromDb()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(requireContext(), "error to deleted", Toast.LENGTH_SHORT).show()
+            }
+
+        }
+
+        )
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.etSearch?.setText("")
     }
 
     private fun fetchDataFromDb() {
@@ -129,7 +159,7 @@ class ShopListFragment : BaseFragment<FragmentShopListBinding>() {
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                     hideProgress()
                     snapshot.getValue(ShopModel::class.java)?.let { shopModelList.add(it) }
-                    shopLisAdapter.notifyDataSetChanged()
+                    shopLisAdapter?.setSortDataList(shopModelList)
                     println("shop data : ${shopModelList}")
                 }
 

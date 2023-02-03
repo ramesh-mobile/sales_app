@@ -22,10 +22,10 @@ class ShopListAdapter(
 ) :
     RecyclerView.Adapter<ShopListAdapter.ViewHolder>() {
 
-    var sortData : List<ShopModel> = data as List<ShopModel>
+    var sortData : ArrayList<ShopModel> = data as ArrayList<ShopModel>
 
     init {
-        sortData = data as List<ShopModel>
+        sortData = data as ArrayList<ShopModel>
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -50,6 +50,10 @@ class ShopListAdapter(
             holder.binding.ivDelete?.gone()
         }
 
+        holder.binding.ivDelete?.setOnClickListener {
+            onDeleteClick?.invoke(shopData?.shopId)
+        }
+
         if(shopData.contact_two.isNullOrBlank()) {
             holder.binding.tvPhoneTwo?.gone()
             holder.binding.ivPhoneTwo?.gone()
@@ -72,9 +76,16 @@ class ShopListAdapter(
     }
 
     fun setSortDataList(sortDataTemp:List<ShopModel>){
-        this.sortData = sortDataTemp
+        this.sortData = sortDataTemp as ArrayList<ShopModel>
         notifyDataSetChanged()
     }
+
+    fun clearDataList(){
+        this.sortData?.clear()
+        notifyDataSetChanged()
+    }
+
+
 
     override fun getItemCount() = sortData?.size ?: 0
 
