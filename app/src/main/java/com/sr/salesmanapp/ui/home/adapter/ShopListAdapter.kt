@@ -22,6 +22,11 @@ class ShopListAdapter(
 ) :
     RecyclerView.Adapter<ShopListAdapter.ViewHolder>() {
 
+    var sortData : List<ShopModel> = data as List<ShopModel>
+
+    init {
+        sortData = data as List<ShopModel>
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         //return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.layout_shop_item,parent,false))
@@ -31,7 +36,7 @@ class ShopListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var shopData = data?.get(position)
+        var shopData = sortData?.get(position)
         holder.binding.tvShopName.setText(shopData.shopName)
         holder.binding.tvOwnerName.setText(shopData.ownerName)
         holder.binding.tvPhoneOne.setText(shopData.contact_one)
@@ -66,7 +71,12 @@ class ShopListAdapter(
         }
     }
 
-    override fun getItemCount() = data?.size ?: 0
+    fun setSortDataList(sortDataTemp:List<ShopModel>){
+        this.sortData = sortDataTemp
+        notifyDataSetChanged()
+    }
+
+    override fun getItemCount() = sortData?.size ?: 0
 
     inner class ViewHolder(var binding: LayoutShopItemBinding) :
         RecyclerView.ViewHolder(binding.root)

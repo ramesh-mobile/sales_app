@@ -2,6 +2,8 @@ package com.sr.salesmanapp.ui.home
 
 import android.content.Intent
 import android.net.Uri
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -23,6 +25,7 @@ import com.sr.salesmanapp.utils.Constants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.nio.file.WatchEvent
 
 class ShopListFragment : BaseFragment<FragmentShopListBinding>() {
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentShopListBinding
@@ -57,6 +60,20 @@ class ShopListFragment : BaseFragment<FragmentShopListBinding>() {
         binding.fabAddShop.setOnClickListener {
             findNavController().navigate(R.id.ShopDetailsFragment)
         }
+
+        binding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                shopLisAdapter?.setSortDataList(shopModelList?.filter { p0?.toString()
+                    ?.let { it1 -> it.shopName?.contains(it1,ignoreCase = true) } ==true })
+            }
+
+        })
     }
 
     val onPhoneOneClick : (String?)->Unit = {
