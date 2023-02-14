@@ -16,4 +16,8 @@
     <string name="title_activity_maps">MapsActivity</string>
 
     <string name="location_updated">Location Updated: %1$s</string>
+    <string-array name="list_option">
+        <item>Edit</item>
+        <item>Delete</item>
+    </string-array>
 </resources>

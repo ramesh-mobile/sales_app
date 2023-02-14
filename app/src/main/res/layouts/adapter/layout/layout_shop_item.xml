@@ -24,20 +24,31 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             android:layout_marginEnd="@dimen/margin_normal_xxxx"
-            app:layout_constraintEnd_toStartOf="@+id/ivDelete"
+            app:layout_constraintEnd_toStartOf="@+id/ivOption"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ivDelete"
+            android:id="@+id/ivOption"
             android:visibility="visible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tvShopName"
-            app:srcCompat="@drawable/ic_baseline_delete_24"
-            app:tint="@color/red"/>
+            app:srcCompat="@drawable/ic_baseline_more_vert_24"/>
+
+
+        <com.sr.salesmanapp.ui.base.BaseSpinner
+            android:id="@+id/spinnerOption"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:background="@null"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvShopName"
+            android:entries="@array/list_option"/>
 
         <TextView
             android:id="@+id/tvOwnerName"
@@ -47,7 +58,7 @@
             android:layout_marginEnd="@dimen/margin_normal_xxxx"
             android:text="Owner Name"
             android:textColor="@color/black"
-            app:layout_constraintEnd_toStartOf="@+id/ivDelete"
+            app:layout_constraintEnd_toStartOf="@+id/ivOption"
             app:layout_constraintStart_toStartOf="@+id/tvShopName"
             app:layout_constraintTop_toBottomOf="@+id/tvShopName" />
 

@@ -2,8 +2,14 @@ package com.sr.salesmanapp.ui.home.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.sr.salesmanapp.R
 import com.sr.salesmanapp.data.model.pojo.ShopModel
 import com.sr.salesmanapp.databinding.LayoutShopItemBinding
 import com.sr.salesmanapp.utils.Constants
@@ -18,7 +24,8 @@ class ShopListAdapter(
     var onPhoneTwoClick: (String?) -> Unit,
     var onAddressClick: (String?) -> Unit,
     var onShareClick: (String?) -> Unit,
-    var onDeleteClick: (String?) -> Unit
+    var onDeleteClick: (String?) -> Unit,
+    var onEditClick: (ShopModel?) -> Unit
 ) :
     RecyclerView.Adapter<ShopListAdapter.ViewHolder>() {
 
@@ -37,21 +44,18 @@ class ShopListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var shopData = sortData?.get(position)
-        holder.binding.tvShopName.setText(shopData.shopName)
-        holder.binding.tvOwnerName.setText(shopData.ownerName)
-        holder.binding.tvPhoneOne.setText(shopData.contact_one)
-        holder.binding.tvPhoneTwo.setText(shopData.contact_two)
-        holder.binding.tvAddress.setText(shopData.address)
+        var spnrClickInitialized = false
+        holder.binding.tvShopName.text = shopData.shopName
+        holder.binding.tvOwnerName.text = shopData.ownerName
+        holder.binding.tvPhoneOne.text = shopData.contact_one
+        holder.binding.tvPhoneTwo.text = shopData.contact_two
+        holder.binding.tvAddress.text = shopData.address
 
         if(userType.equals(Constants.ADMIN)){
-            holder.binding.ivDelete?.visible()
+            holder.binding.ivOption?.visible()
         }
         else{
-            holder.binding.ivDelete?.gone()
-        }
-
-        holder.binding.ivDelete?.setOnClickListener {
-            onDeleteClick?.invoke(shopData?.shopId)
+            holder.binding.ivOption?.gone()
         }
 
         if(shopData.contact_two.isNullOrBlank()) {
@@ -63,6 +67,24 @@ class ShopListAdapter(
             holder.binding.ivPhoneTwo?.visible()
         }
 
+
+
+        holder.binding.spinnerOption?.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                if(!spnrClickInitialized) {
+                    spnrClickInitialized = true
+                    return
+                }
+                when (p2){
+                    0-> onEditClick?.invoke(shopData)
+                    1-> onDeleteClick?.invoke(shopData?.shopId)
+                }
+            }
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+        }
+
+        holder.binding.ivOption?.setOnClickListener {holder.binding.spinnerOption?.performClick()}
         holder.binding.ivPhoneOne?.setOnClickListener { onPhoneOneClick.invoke(shopData.contact_one) }
         holder.binding.ivPhoneTwo?.setOnClickListener { onPhoneTwoClick.invoke(shopData.contact_two) }
         holder.binding.ivAddress?.setOnClickListener { onAddressClick.invoke(shopData.address) }

@@ -7,9 +7,10 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
@@ -22,10 +23,10 @@ import com.sr.salesmanapp.databinding.FragmentShopListBinding
 import com.sr.salesmanapp.ui.base.BaseFragment
 import com.sr.salesmanapp.ui.home.adapter.ShopListAdapter
 import com.sr.salesmanapp.utils.Constants
+import com.sr.salesmanapp.utils.Params
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.nio.file.WatchEvent
 
 class ShopListFragment : BaseFragment<FragmentShopListBinding>() {
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentShopListBinding
@@ -45,7 +46,7 @@ class ShopListFragment : BaseFragment<FragmentShopListBinding>() {
             userType = Gson().fromJson<UsersModel>(it,UsersModel::class.java).userType!!
         }
 
-        shopLisAdapter = ShopListAdapter(requireContext(),userType,shopModelList,onPhoneOneClick,onPhoneTwoClick,onAddressClick,onShareClick,onDeleteClick)
+        shopLisAdapter = ShopListAdapter(requireContext(),userType,shopModelList,onPhoneOneClick,onPhoneTwoClick,onAddressClick,onShareClick,onDeleteClick,onEditClick)
         binding.rvShops.apply {
             layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
             adapter = shopLisAdapter
@@ -74,6 +75,8 @@ class ShopListFragment : BaseFragment<FragmentShopListBinding>() {
             }
 
         })
+
+
     }
 
     val onPhoneOneClick : (String?)->Unit = {
@@ -102,9 +105,30 @@ class ShopListFragment : BaseFragment<FragmentShopListBinding>() {
     }
 
     private val onDeleteClick : (String?)->Unit = {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Confirmation")
+            .setMessage("Are you sure to delete?")
+            .setPositiveButton("Yes"){dialogInterface,which->
+                deleteItemRequest(it)
+            }.setNegativeButton("No"){dialogInterface,which->
+                dialogInterface.dismiss()
+            }
+            .create()
+            //.setCancelable(false)
+            .show()
+
+    }
+
+    private val onEditClick : (ShopModel?)->Unit = {
+        findNavController().navigate(R.id.ShopDetailsFragment, bundleOf().apply {
+            Pair(Params.SHOP_MODEL,it)
+        })
+    }
+
+    private fun deleteItemRequest(deleteId: String?) {
         Toast.makeText(requireContext(), "Under process", Toast.LENGTH_SHORT).show()
         dbReference = FirebaseDatabase.getInstance().getReference(Constants.SHOP_MODEL)
-        dbReference.orderByChild("shopId").equalTo(it).addListenerForSingleValueEvent(object : ValueEventListener {
+        dbReference.orderByChild("shopId").equalTo(deleteId).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 snapshot.children.forEach {
                     Toast.makeText(requireContext(), "data deleted", Toast.LENGTH_SHORT).show()
@@ -120,9 +144,7 @@ class ShopListFragment : BaseFragment<FragmentShopListBinding>() {
                 Toast.makeText(requireContext(), "error to deleted", Toast.LENGTH_SHORT).show()
             }
 
-        }
-
-        )
+        })
     }
 
     override fun onResume() {
@@ -193,4 +215,6 @@ class ShopListFragment : BaseFragment<FragmentShopListBinding>() {
     fun hideProgress(){
         (requireActivity() as HomeActivity).hideProgress()
     }
+
+
 }

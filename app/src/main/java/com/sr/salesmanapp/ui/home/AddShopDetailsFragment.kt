@@ -21,6 +21,7 @@ import com.sr.salesmanapp.databinding.FragmentShopDetailsBinding
 import com.sr.salesmanapp.ui.base.BaseFragment
 import com.sr.salesmanapp.utils.Constants
 import com.sr.salesmanapp.utils.LocationUtils
+import com.sr.salesmanapp.utils.Params
 import com.sr.salesmanapp.utils.ViewUtils
 import kotlinx.coroutines.*
 
@@ -36,10 +37,19 @@ class AddShopDetailsFragment : BaseFragment<FragmentShopDetailsBinding>() {
     lateinit var userId : String
 
     override fun initView() {
+
         user = FirebaseAuth.getInstance().currentUser!!
         userId = user.uid
         dbReference = FirebaseDatabase.getInstance().getReference(Constants.SHOP_MODEL)
         setListener()
+
+        if(requireArguments().containsKey(Params.SHOP_MODEL)){
+            setValues(requireArguments().get(Params.SHOP_MODEL) as ShopModel)
+        }
+    }
+
+    private fun setValues(shopModel: ShopModel) {
+        //binding.etAddress = shopModel
     }
 
     private fun setListener() {
