@@ -20,4 +20,8 @@
         <item>Edit</item>
         <item>Delete</item>
     </string-array>
+
+    <string name="update">Update</string>
+    <string name="add_shop_details">Add Shop Details</string>
+    <string name="update_shop_details">Update Shop Details</string>
 </resources>

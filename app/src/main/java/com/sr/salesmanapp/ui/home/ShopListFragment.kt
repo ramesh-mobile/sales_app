@@ -79,24 +79,24 @@ class ShopListFragment : BaseFragment<FragmentShopListBinding>() {
 
     }
 
-    val onPhoneOneClick : (String?)->Unit = {
+    private val onPhoneOneClick : (String?)->Unit = {
         val intent = Intent(Intent.ACTION_DIAL)
         intent.data = Uri.parse("tel:${it}")
         startActivity(intent)
     }
 
-    val onPhoneTwoClick : (String?)->Unit = {
+    private val onPhoneTwoClick : (String?)->Unit = {
         val intent = Intent(Intent.ACTION_DIAL)
         intent.data = Uri.parse("tel:${it}")
         startActivity(intent)
     }
 
-    val onAddressClick : (String?)->Unit = {
+    private val onAddressClick : (String?)->Unit = {
         var latlng = it?.split(",")
         startActivity(Intent(Intent.ACTION_VIEW,Uri.parse("https://www.google.com/maps?q=${latlng?.get(0)?.trim()?:0.0},${latlng?.get(1)?.trim()?:0.0}(Consumer)")))
     }
 
-    val onShareClick : (String?)->Unit = {
+    private val onShareClick : (String?)->Unit = {
         var latlng = it?.split(",")
         startActivity(Intent(Intent.ACTION_SEND).apply {
             putExtra(Intent.EXTRA_TEXT, "https://www.google.com/maps?q=${latlng?.get(0)?.trim()?:0.0},${latlng?.get(1)?.trim()?:0.0}(Consumer)")
@@ -120,9 +120,7 @@ class ShopListFragment : BaseFragment<FragmentShopListBinding>() {
     }
 
     private val onEditClick : (ShopModel?)->Unit = {
-        findNavController().navigate(R.id.ShopDetailsFragment, bundleOf().apply {
-            Pair(Params.SHOP_MODEL,it)
-        })
+        findNavController().navigate(R.id.ShopDetailsFragment, bundleOf(Pair(Params.SHOP_MODEL,it)))
     }
 
     private fun deleteItemRequest(deleteId: String?) {
@@ -208,11 +206,11 @@ class ShopListFragment : BaseFragment<FragmentShopListBinding>() {
         }
     }
 
-    fun showProgress(){
+    private fun showProgress(){
         (requireActivity() as HomeActivity).showProgress()
     }
 
-    fun hideProgress(){
+    private fun hideProgress(){
         (requireActivity() as HomeActivity).hideProgress()
     }
 

@@ -36,6 +36,8 @@ class AddShopDetailsFragment : BaseFragment<FragmentShopDetailsBinding>() {
     lateinit var dbReference : DatabaseReference
     lateinit var userId : String
 
+    var shopModel : ShopModel? = null
+
     override fun initView() {
 
         user = FirebaseAuth.getInstance().currentUser!!
@@ -43,13 +45,21 @@ class AddShopDetailsFragment : BaseFragment<FragmentShopDetailsBinding>() {
         dbReference = FirebaseDatabase.getInstance().getReference(Constants.SHOP_MODEL)
         setListener()
 
-        if(requireArguments().containsKey(Params.SHOP_MODEL)){
+        try {
             setValues(requireArguments().get(Params.SHOP_MODEL) as ShopModel)
-        }
+        } catch (e: Exception) {e.printStackTrace()}
     }
 
     private fun setValues(shopModel: ShopModel) {
-        //binding.etAddress = shopModel
+        this.shopModel = shopModel
+        binding.etShopName.setText(shopModel.shopName)
+        binding.etOwnerName.setText(shopModel.ownerName)
+        binding.etContactOne.setText(shopModel.contact_one)
+        binding.etContactTwo.setText(shopModel.contact_two)
+        binding.etAddress.setText(shopModel.address)
+
+        binding.btnSubmit.text = getString(R.string.update)
+        binding.lblShop.text = getString(R.string.update_shop_details)
     }
 
     private fun setListener() {
@@ -152,7 +162,8 @@ class AddShopDetailsFragment : BaseFragment<FragmentShopDetailsBinding>() {
             binding.etContactTwo?.text?.toString(),
             binding.etAddress?.text?.toString(),
             SalesManApplication.lastAddressLatLog?.latitude?.toString(),
-            SalesManApplication.lastAddressLatLog?.longitude?.toString()
+            SalesManApplication.lastAddressLatLog?.longitude?.toString(),
+            binding.etEmail?.text?.toString()
         )).addOnCompleteListener {
             if(it.isSuccessful){
                 Toast.makeText(requireContext(), "Shop saved successfully!", Toast.LENGTH_SHORT).show()
