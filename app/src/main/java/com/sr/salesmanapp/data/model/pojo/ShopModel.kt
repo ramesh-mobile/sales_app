@@ -3,6 +3,13 @@ package com.sr.salesmanapp.data.model.pojo
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
+
+@Parcelize
+data class ShopModelResponse constructor(
+  val key: String? = null,
+  var shopModel: ShopModel? = null
+) :Parcelable
+
 @Parcelize
 data class ShopModel(
   var shopId :String? = null,

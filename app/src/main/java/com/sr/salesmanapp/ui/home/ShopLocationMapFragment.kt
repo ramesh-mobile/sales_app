@@ -108,6 +108,9 @@ class ShopLocationMapFragment : BaseFragment<FragmentDeliveryDetailsMapBinding>(
         }
     }
 
+    override fun observeData() {
+    }
+
     private fun setListener() {
         setTextChangeListener()
         binding.confirmLocation.setOnClickListener {

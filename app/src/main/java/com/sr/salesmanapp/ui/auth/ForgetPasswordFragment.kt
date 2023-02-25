@@ -87,4 +87,8 @@ class ForgetPasswordFragment : BaseFragment<FragmentForgetPasswordBinding>() {
         mAuth = FirebaseAuth.getInstance()
         setListener()
     }
+
+    override fun observeData() {
+
+    }
 }

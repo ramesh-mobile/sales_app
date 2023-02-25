@@ -282,6 +282,9 @@ class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback,
 
     }
 
+    override fun observeData() {
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         removeLocationUpdates()

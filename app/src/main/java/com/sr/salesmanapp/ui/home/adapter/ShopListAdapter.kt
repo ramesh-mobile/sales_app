@@ -19,7 +19,7 @@ import com.sr.salesmanapp.utils.ViewUtils.visible
 class ShopListAdapter(
     var context: Context,
     var userType: String,
-    var data: List<ShopModel>,
+    var data: List<ShopModel?>,
     var onPhoneOneClick: (String?) -> Unit,
     var onPhoneTwoClick: (String?) -> Unit,
     var onAddressClick: (String?) -> Unit,
@@ -97,7 +97,7 @@ class ShopListAdapter(
         }
     }
 
-    fun setSortDataList(sortDataTemp:List<ShopModel>){
+    fun setSortDataList(sortDataTemp:List<ShopModel?>){
         this.sortData = sortDataTemp as ArrayList<ShopModel>
         notifyDataSetChanged()
     }

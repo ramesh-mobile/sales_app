@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.text.trimmedLength
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -17,27 +18,36 @@ import com.google.firebase.ktx.Firebase
 import com.sr.salesmanapp.R
 import com.sr.salesmanapp.SalesManApplication
 import com.sr.salesmanapp.data.model.pojo.ShopModel
+import com.sr.salesmanapp.data.model.pojo.ShopModelResponse
+import com.sr.salesmanapp.data.network.ResultStatus
 import com.sr.salesmanapp.databinding.FragmentShopDetailsBinding
 import com.sr.salesmanapp.ui.base.BaseFragment
 import com.sr.salesmanapp.utils.Constants
 import com.sr.salesmanapp.utils.LocationUtils
+import com.sr.salesmanapp.utils.ObserversUtil.observe
 import com.sr.salesmanapp.utils.Params
 import com.sr.salesmanapp.utils.ViewUtils
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
+
+@AndroidEntryPoint
 class AddShopDetailsFragment : BaseFragment<FragmentShopDetailsBinding>() {
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentShopDetailsBinding
         get() = FragmentShopDetailsBinding::inflate
 
+    val viewModel by viewModels<ShopListViewModel>()
     lateinit var user : FirebaseUser
     lateinit var dbReference : DatabaseReference
     lateinit var userId : String
 
     var shopModel : ShopModel? = null
 
+    var isAdd = true
+    var shopModelResponse : ShopModelResponse? = null
     override fun initView() {
 
         user = FirebaseAuth.getInstance().currentUser!!
@@ -46,12 +56,48 @@ class AddShopDetailsFragment : BaseFragment<FragmentShopDetailsBinding>() {
         setListener()
 
         try {
-            setValues(requireArguments().get(Params.SHOP_MODEL) as ShopModel)
-        } catch (e: Exception) {e.printStackTrace()}
+
+            shopModelResponse = requireArguments().get(Params.SHOP_MODEL_RESPONSE) as ShopModelResponse?
+            isAdd = false
+            setValues(shopModelResponse?.shopModel!!)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    override fun observeData() {
+
+        //for insert data
+        observe(viewModel.insertResponse){
+            handleResponse(it)
+        }
+
+        //for update data
+        observe(viewModel.updateResponse){
+            handleResponse(it)
+        }
+    }
+
+    private fun handleResponse(it: ResultStatus<String>?) {
+        when(it){
+            is ResultStatus.Loading->{
+                showProgress()
+            }
+            is ResultStatus.Success->{
+                hideProgress()
+                Toast.makeText(requireContext(), it.data, Toast.LENGTH_SHORT).show()
+            }
+            is ResultStatus.Failure->{
+                hideProgress()
+                Toast.makeText(requireContext(), "${it.t.message}", Toast.LENGTH_LONG).show()
+                println("fragment data error:${it.t.message}")
+            }
+        }
     }
 
     private fun setValues(shopModel: ShopModel) {
         this.shopModel = shopModel
+        binding.etEmail.setText(shopModel.email)
         binding.etShopName.setText(shopModel.shopName)
         binding.etOwnerName.setText(shopModel.ownerName)
         binding.etContactOne.setText(shopModel.contact_one)
@@ -147,8 +193,23 @@ class AddShopDetailsFragment : BaseFragment<FragmentShopDetailsBinding>() {
         else
             binding.etAddress?.error = null
 
-        saveDataInDb()
+        val shpModel = ShopModel(
+            shopModelResponse?.shopModel?.shopId?:System.currentTimeMillis().toString(),
+            binding.etShopName?.text?.toString(),
+            binding.etOwnerName?.text?.toString(),
+            binding.etContactOne?.text?.toString(),
+            binding.etContactTwo?.text?.toString(),
+            binding.etAddress?.text?.toString(),
+            SalesManApplication.lastAddressLatLog?.latitude?.toString(),
+            SalesManApplication.lastAddressLatLog?.longitude?.toString(),
+            binding.etEmail?.text?.toString()
+        )
 
+        //saveDataInDb()
+        if(isAdd)
+            viewModel.insertShop(shpModel)
+        else
+            viewModel.updateShop(ShopModelResponse(shopModelResponse?.key,shpModel))
 
     }
 
@@ -172,6 +233,14 @@ class AddShopDetailsFragment : BaseFragment<FragmentShopDetailsBinding>() {
             else
                 Toast.makeText(requireContext(), "Failed to save!", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun showProgress(){
+        (requireActivity() as HomeActivity).showProgress()
+    }
+
+    private fun hideProgress(){
+        (requireActivity() as HomeActivity).hideProgress()
     }
 
 }

@@ -31,9 +31,12 @@ abstract class BaseFragment<VB : ViewBinding>:Fragment() {
         super.onViewCreated(view, savedInstanceState)
         this.savedInstanceState = savedInstanceState
         initView()
+        observeData()
     }
 
     abstract fun initView()
+
+    abstract fun observeData()
 
     override fun onDestroyView() {
         super.onDestroyView()

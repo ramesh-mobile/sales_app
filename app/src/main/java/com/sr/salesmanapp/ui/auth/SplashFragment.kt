@@ -51,4 +51,8 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
             else findNavController().navigate(R.id.LoginFragment)
         }
     }
+
+    override fun observeData() {
+
+    }
 }

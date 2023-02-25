@@ -44,6 +44,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         setListener()
     }
 
+    override fun observeData() {
+
+    }
+
     private fun setListener() {
         binding.btnSubmit.setOnClickListener {
             doLogin()

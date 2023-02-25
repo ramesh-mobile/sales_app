@@ -39,6 +39,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         setListener()
     }
 
+    override fun observeData() {
+    }
+
     private val itemClick : (Int) -> Unit = {
         when(it){
             0-> findNavController().navigate(R.id.ShopListFragment)

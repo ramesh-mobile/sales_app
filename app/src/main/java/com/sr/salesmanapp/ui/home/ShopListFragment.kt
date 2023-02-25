@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
@@ -18,16 +19,21 @@ import com.google.gson.Gson
 import com.pixplicity.easyprefs.library.Prefs
 import com.sr.salesmanapp.R
 import com.sr.salesmanapp.data.model.pojo.ShopModel
+import com.sr.salesmanapp.data.model.pojo.ShopModelResponse
 import com.sr.salesmanapp.data.model.pojo.UsersModel
+import com.sr.salesmanapp.data.network.ResultStatus
 import com.sr.salesmanapp.databinding.FragmentShopListBinding
 import com.sr.salesmanapp.ui.base.BaseFragment
 import com.sr.salesmanapp.ui.home.adapter.ShopListAdapter
 import com.sr.salesmanapp.utils.Constants
+import com.sr.salesmanapp.utils.ObserversUtil.observe
 import com.sr.salesmanapp.utils.Params
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class ShopListFragment : BaseFragment<FragmentShopListBinding>() {
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentShopListBinding
         get() = FragmentShopListBinding::inflate
@@ -35,10 +41,12 @@ class ShopListFragment : BaseFragment<FragmentShopListBinding>() {
     var firebaseUser : FirebaseUser? = null
     lateinit var dbReference : DatabaseReference
     lateinit var userId : String
-    var shopModelList = mutableListOf<ShopModel>()
+    var shopModelList = mutableListOf<ShopModel?>()
+    lateinit var shopModelResponseList : List<ShopModelResponse>
 
     lateinit var shopLisAdapter : ShopListAdapter
 
+    val viewModel by viewModels<ShopListViewModel>()
 
     override fun initView() {
         var userType : String = Constants.NORMAL
@@ -48,13 +56,63 @@ class ShopListFragment : BaseFragment<FragmentShopListBinding>() {
 
         shopLisAdapter = ShopListAdapter(requireContext(),userType,shopModelList,onPhoneOneClick,onPhoneTwoClick,onAddressClick,onShareClick,onDeleteClick,onEditClick)
         binding.rvShops.apply {
-            layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+            //layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
             adapter = shopLisAdapter
         }
         setListener()
 
         shopModelList?.clear()
-        fetchDataFromDb()
+        shopModelList?.clear()
+
+        viewModel.getData()
+        //fetchDataFromDb()
+    }
+
+    override fun observeData() {
+
+
+        //for fetch data
+        observe(viewModel.fetchResponse){
+            when(it){
+                is ResultStatus.Loading->{
+                    showProgress()
+                }
+                is ResultStatus.Success->{
+                    hideProgress()
+                    shopModelResponseList = it.data
+                    it.data.map { it.shopModel }?.let { it1 -> shopModelList.addAll(it1) }
+                    shopLisAdapter?.setSortDataList(shopModelList)
+                }
+                is ResultStatus.Failure->{
+                    hideProgress()
+                    Toast.makeText(requireContext(), "${it.t.message}", Toast.LENGTH_LONG).show()
+                    println("fragment data error:${it.t.message}")
+                }
+            }
+        }
+
+        //for delete data
+        observe(viewModel.deleteResponse){
+            handleResponse(it)
+        }
+    }
+
+    private fun handleResponse(it: ResultStatus<String>?) {
+        when(it){
+            is ResultStatus.Loading->{
+                showProgress()
+            }
+            is ResultStatus.Success->{
+                hideProgress()
+                Toast.makeText(requireContext(), it.data, Toast.LENGTH_SHORT).show()
+                viewModel.getData()
+            }
+            is ResultStatus.Failure->{
+                hideProgress()
+                Toast.makeText(requireContext(), "${it.t.message}", Toast.LENGTH_LONG).show()
+                println("fragment data error:${it.t.message}")
+            }
+        }
     }
 
     private fun setListener() {
@@ -71,7 +129,7 @@ class ShopListFragment : BaseFragment<FragmentShopListBinding>() {
 
             override fun afterTextChanged(p0: Editable?) {
                 shopLisAdapter?.setSortDataList(shopModelList?.filter { p0?.toString()
-                    ?.let { it1 -> it.shopName?.contains(it1,ignoreCase = true) } ==true })
+                    ?.let { it1 -> it?.shopName?.contains(it1,ignoreCase = true) } ==true })
             }
 
         })
@@ -104,12 +162,13 @@ class ShopListFragment : BaseFragment<FragmentShopListBinding>() {
         })
     }
 
-    private val onDeleteClick : (String?)->Unit = {
+    private val onDeleteClick : (String?)->Unit = { shopId->
         AlertDialog.Builder(requireContext())
             .setTitle("Confirmation")
             .setMessage("Are you sure to delete?")
             .setPositiveButton("Yes"){dialogInterface,which->
-                deleteItemRequest(it)
+                //deleteItemRequest(shopId)
+                viewModel.deleteShop((shopModelResponseList?.find { it.shopModel?.shopId?.equals(shopId)==true })?.key!!)
             }.setNegativeButton("No"){dialogInterface,which->
                 dialogInterface.dismiss()
             }
@@ -119,8 +178,8 @@ class ShopListFragment : BaseFragment<FragmentShopListBinding>() {
 
     }
 
-    private val onEditClick : (ShopModel?)->Unit = {
-        findNavController().navigate(R.id.ShopDetailsFragment, bundleOf(Pair(Params.SHOP_MODEL,it)))
+    private val onEditClick : (ShopModel?)->Unit = {shopModelTemp->
+        findNavController().navigate(R.id.ShopDetailsFragment, bundleOf(Pair(Params.SHOP_MODEL_RESPONSE,shopModelResponseList?.find { it.shopModel?.shopId?.equals(shopModelTemp?.shopId)==true })))
     }
 
     private fun deleteItemRequest(deleteId: String?) {
