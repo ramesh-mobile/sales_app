@@ -182,6 +182,26 @@ class ShopListFragment : BaseFragment<FragmentShopListBinding>() {
         findNavController().navigate(R.id.ShopDetailsFragment, bundleOf(Pair(Params.SHOP_MODEL_RESPONSE,shopModelResponseList?.find { it.shopModel?.shopId?.equals(shopModelTemp?.shopId)==true })))
     }
 
+    override fun onResume() {
+        super.onResume()
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.etSearch?.setText("")
+    }
+
+    private fun showProgress(){
+        (requireActivity() as HomeActivity).showProgress()
+    }
+
+    private fun hideProgress(){
+        (requireActivity() as HomeActivity).hideProgress()
+    }
+
+
+
     private fun deleteItemRequest(deleteId: String?) {
         Toast.makeText(requireContext(), "Under process", Toast.LENGTH_SHORT).show()
         dbReference = FirebaseDatabase.getInstance().getReference(Constants.SHOP_MODEL)
@@ -203,17 +223,6 @@ class ShopListFragment : BaseFragment<FragmentShopListBinding>() {
 
         })
     }
-
-    override fun onResume() {
-        super.onResume()
-
-    }
-
-    override fun onPause() {
-        super.onPause()
-        binding.etSearch?.setText("")
-    }
-
     private fun fetchDataFromDb() {
         firebaseUser = FirebaseAuth.getInstance().currentUser
         dbReference = FirebaseDatabase.getInstance().getReference(Constants.SHOP_MODEL)
@@ -264,14 +273,5 @@ class ShopListFragment : BaseFragment<FragmentShopListBinding>() {
             })
         }
     }
-
-    private fun showProgress(){
-        (requireActivity() as HomeActivity).showProgress()
-    }
-
-    private fun hideProgress(){
-        (requireActivity() as HomeActivity).hideProgress()
-    }
-
 
 }

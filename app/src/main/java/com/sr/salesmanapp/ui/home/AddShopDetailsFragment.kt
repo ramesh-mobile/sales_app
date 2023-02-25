@@ -213,6 +213,14 @@ class AddShopDetailsFragment : BaseFragment<FragmentShopDetailsBinding>() {
 
     }
 
+    private fun showProgress(){
+        (requireActivity() as HomeActivity).showProgress()
+    }
+
+    private fun hideProgress(){
+        (requireActivity() as HomeActivity).hideProgress()
+    }
+
     private fun saveDataInDb() {
         var storeId = System.currentTimeMillis().toString()
         dbReference.child(storeId).setValue(ShopModel(
@@ -233,14 +241,6 @@ class AddShopDetailsFragment : BaseFragment<FragmentShopDetailsBinding>() {
             else
                 Toast.makeText(requireContext(), "Failed to save!", Toast.LENGTH_SHORT).show()
         }
-    }
-
-    private fun showProgress(){
-        (requireActivity() as HomeActivity).showProgress()
-    }
-
-    private fun hideProgress(){
-        (requireActivity() as HomeActivity).hideProgress()
     }
 
 }
